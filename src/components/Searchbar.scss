@@ -1,0 +1,62 @@
+@import '../styles.scss';
+
+.dodoSearchbar {
+  position: relative;
+  width: 100%;
+}
+
+.dodoInputIcon {
+  height: 20px;
+  margin-left: 5px;
+}
+
+.dodoAutocompleteWrapper {
+  background-color: $background;
+  border: $border-standard;
+  border-style: inset;
+  border-radius: 0px 0px 4px 4px;
+  max-height: 100px;
+  margin-top: -3px;
+  overflow-y: overlay;
+  position: absolute;
+  width: 100%;
+  box-sizing: border-box;
+  z-index: 9999;
+}
+
+.dodoAutocompleteHide {
+  display: none;
+  padding: 0;
+  margin: 0;
+}
+
+.dodoAutocompleteUl {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.dodoAutocompleteLi {
+  line-height: 30px;
+  padding-top: 2.5px;
+  padding-bottom: 2.5px;
+  padding-left: 15px;
+
+  &:hover {
+    background-color: $secondary-color;
+    color: $text;
+  }
+}
+
+.dodoAutocompleteHover {
+  background-color: $secondary-color;
+  color: $text;
+}
+
+.dodoAutocompleteHide {
+  display: none;
+}
+
+*:focus {
+  outline: none;
+}

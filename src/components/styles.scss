@@ -1,0 +1,35 @@
+@mixin dodo-flex {
+  display: flex;
+}
+
+@mixin dodo-flex-centered {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+}
+
+@mixin dodo-flex-justified {
+  display: flex;
+  justify-content: space-between;
+}
+
+@mixin dodo-margin {
+  margin: 2.5px;
+}
+
+.dodoFlex {
+  @include dodo-flex;
+}
+
+.dodoFlexJustified {
+  @include dodo-flex-justified;
+}
+
+.dodoFlexCentered {
+  @include dodo-flex-centered;
+}
+
+.dodoFlexRow {
+  @include dodo-flex;
+  flex-direction: row;
+}

@@ -1,0 +1,26 @@
+@import '../styles.scss';
+@import './styles.scss';
+
+.dodoInputGridContainer {
+  display: flex;
+  justify-content: center;
+
+  .dodoInputGrid {
+    margin: 0 1px;
+    padding: 2px !important;
+    font-size: $h2-size;
+    width: 20px;
+    border: none;
+    border-bottom: $border-standard;
+  }
+
+  .dodoInputGridCorrect {
+    color: $success;
+    border-color: $success;
+  }
+
+  .dodoInputGridIncorrect {
+    color: $error;
+    border-color: $error;
+  }
+}

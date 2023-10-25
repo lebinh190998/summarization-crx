@@ -1,0 +1,48 @@
+@import '../../styles.scss';
+@import '../../components/styles.scss';
+
+.dodoPopup {
+  background-color: $background;
+  padding: 10px;
+  margin-top: 10.5px;
+  margin-left: -20px;
+  border-radius: 5px;
+  box-shadow: RGB(9 30 66 / 25%) 0px 4px 8px -2px,
+    RGB(9 30 66 / 8%) 0px 0px 0px 1px;
+  width: 600px;
+  height: 300px;
+  overflow-y: overlay;
+}
+
+.dodoPopupIconWrapper {
+  border-radius: 10px;
+  box-shadow: RGB(9 30 66/25%) 0px 4px 8px -2px, RGB(9 30 66/8%) 0px 0px 0px 1px;
+  height: 30px;
+  padding: 5px;
+  border: none;
+  opacity: 0.98;
+  color: $main-color;
+  font-weight: 600;
+}
+
+.dodoPopupIconWrapper:hover {
+  background-color: $main-color;
+  opacity: 1;
+  color: $background;
+}
+
+.dodoPopupIconWrapper[disabled] {
+  opacity: 1;
+  background-color: $background;
+  color: $text;
+}
+
+.dodoPopupIconWrapper[disabled]:hover {
+  opacity: 1;
+  background-color: $background;
+  color: $text;
+}
+
+.dodoPopupLabel {
+  margin: 0 2.5px;
+}

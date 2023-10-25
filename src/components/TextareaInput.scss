@@ -1,0 +1,24 @@
+@import '../styles.scss';
+
+.dodoTextareaWrapper {
+  display: flex;
+  border: $border-standard;
+  border-style: inset;
+  border-radius: 4px;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 5px;
+  box-sizing: border-box;
+}
+
+.dodoTextarea {
+  border: none !important;
+  box-shadow: none !important;
+  display: inline-block;
+  background-color: transparent;
+  min-height: 30px;
+  color: $text;
+  width: 100%;
+  padding: 0;
+}

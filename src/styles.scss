@@ -1,0 +1,223 @@
+@import './components/styles.scss';
+
+$main-color: #908eeb;
+$light-main: #bcbbf3;
+$secondary-color: #e1caf5;
+$background: white;
+$background-secondary: RGB(153, 153, 153, 0.3);
+$background-dark: #383856;
+$text: black;
+$success: #27a035;
+$error: #ff6464;
+$waiting: #ffdb89;
+
+$h0-size: 26px;
+$h1-size: 22px;
+$h2-size: 18px;
+$h3-size: 16px;
+$h4-size: 14px;
+$p-size: 12px;
+
+$border-standard: 2px solid #000;
+$border-thin: 1px solid #000;
+
+[class*='dodo'] {
+  font-family: Prompt-Regular;
+}
+
+/* width */
+[class*='dodo']::-webkit-scrollbar {
+  width: 4px;
+}
+
+/* Track */
+[class*='dodo']::-webkit-scrollbar-track {
+  background: $background;
+}
+
+/* Handle */
+[class*='dodo']::-webkit-scrollbar-thumb {
+  background: $main-color;
+}
+
+/* Handle on hover */
+[class*='dodo']::-webkit-scrollbar-thumb:hover {
+  background: $secondary-color;
+}
+
+.dodoPopupContents {
+  padding: 5px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.dodoPopupWrapper {
+  width: 100%;
+  height: 100%;
+  overflow-y: overlay;
+}
+
+.dodoPopupSentenceWrapper {
+  width: 100%;
+  height: 100%;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.dodoButtonWrapper {
+  @include dodo-flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  align-items: center;
+
+  & > * {
+    margin-right: 5px;
+    margin-top: 2.5px;
+    margin-bottom: 2.5px;
+
+    &:last-child {
+      margin-right: 0;
+    }
+  }
+}
+
+.dodoHeadingWrapper {
+  @include dodo-flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+}
+
+.dodoItalic {
+  font-style: italic;
+}
+
+.dodoPronounceWrapper {
+  @include dodo-flex;
+  flex-direction: row;
+  justify-content: space-between;
+
+  & .dodoPronounceContainer {
+    display: inherit;
+    box-sizing: border-box;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 2px;
+    background: $background-secondary;
+    padding: 2.5px 10px;
+    width: 48%;
+
+    & .dodoPronounceContent {
+      display: inherit;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: center;
+      height: 100%;
+
+      & div {
+        width: 100%;
+        display: flex;
+        align-items: center;
+      }
+    }
+  }
+}
+
+.dodoSpinningIcon {
+  animation: spin-animation 1s infinite;
+  color: $main-color;
+  display: inline-block;
+  padding: 10px;
+  width: 20px;
+  height: 20px;
+}
+
+.dodoSpinningIconSmall {
+  animation: spin-animation 1s infinite;
+  color: $main-color;
+}
+
+@keyframes spin-animation {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(359deg);
+  }
+}
+
+.dodoItem {
+  padding: 0 2.5px;
+}
+
+.dodoZIndex {
+  z-index: 999999999999999999999999999999999;
+}
+
+.dodoListenSection {
+  display: flex;
+
+  & .dodoDropdownButton {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    flex-direction: row-reverse;
+    width: 110px;
+  }
+
+  & .dodoListenButton {
+    border-left: none;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+  }
+}
+
+.dodoButtonContainer {
+  @include dodo-flex-centered;
+  padding-top: 5px;
+}
+
+.dodoInvisibleInput {
+  border: none;
+  padding: 0;
+  min-height: 70px;
+}
+
+.dodoLanguageSection {
+  width: 46%;
+}
+
+.dodoEnglishTitleSection {
+  display: flex;
+  align-items: center;
+
+  & > * {
+    margin-right: 5px;
+  }
+}
+
+.dodoPopupFooter {
+  margin-top: 5px;
+  display: flex;
+  width: 100%;
+}
+
+.dodoCorrect {
+  color: $success;
+  font-weight: 700;
+}
+
+.dodoNavBar {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+
+  & > button {
+    margin-left: 5px;
+  }
+}

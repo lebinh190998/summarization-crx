@@ -1,0 +1,85 @@
+@import '../styles.scss';
+@import './styles.scss';
+
+.dodoTextStaticContainer {
+  // display: inline-block;
+  margin-right: 5px;
+}
+
+.dodoH0 {
+  font-family: Anton-Regular !important;
+  font-size: $h0-size;
+
+  text-transform: uppercase;
+  margin-bottom: 5px;
+  margin-top: 5px;
+
+  display: flex;
+  align-items: center;
+  color: $main-color;
+}
+
+.dodoH1 {
+  font-family: Anton-Regular !important;
+  font-size: $h1-size;
+
+  text-transform: uppercase;
+  margin-bottom: 5px;
+  margin-top: 5px;
+
+  display: flex;
+  align-items: center;
+  color: $text;
+}
+
+.dodoH2 {
+  font-family: Anton-Regular !important;
+  font-size: $h2-size;
+
+  text-transform: lowercase;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  color: $text;
+}
+
+.dodoH3 {
+  font-family: Prompt-Bold !important;
+  font-size: $h3-size;
+
+  text-transform: lowercase;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  color: $text;
+}
+
+.dodoH4 {
+  font-family: Prompt-Bold !important;
+  font-size: $h4-size;
+
+  text-transform: lowercase;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  color: $text;
+}
+
+.dodoParagraph {
+  font-family: Prompt-Regular !important;
+  font-size: $p-size;
+
+  margin-top: 5px;
+  margin-bottom: 5px;
+  color: $text;
+  overflow-wrap: break-word;
+}
+
+.primary {
+  color: $main-color;
+}
+
+.secondary {
+  color: $background;
+}
+
+.hover:hover {
+  color: $main-color;
+}

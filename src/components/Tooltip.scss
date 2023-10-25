@@ -1,0 +1,50 @@
+.dodoTooltipWrapper {
+  position: relative;
+}
+
+.dodoTooltip {
+  position: absolute;
+  background-color: #000;
+  text-align: center;
+  color: #fff;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  border-radius: 4px;
+  padding: 6px 10px;
+  z-index: 9999999;
+
+  &::before {
+    content: '';
+    position: absolute;
+  }
+}
+
+.dodoTop {
+  bottom: 100%;
+  left: 50%;
+  margin-bottom: 10px;
+
+  &::before {
+    top: 100%;
+    left: 50%;
+    margin-left: -4px;
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    border-top: 8px solid #000;
+  }
+}
+
+.dodoBottom {
+  top: 100%;
+  left: 50%;
+  margin-top: 10px;
+
+  &::before {
+    bottom: 100%;
+    left: 50%;
+    margin-right: -4px;
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    border-bottom: 8px solid #000;
+  }
+}

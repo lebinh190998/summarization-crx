@@ -1,0 +1,23 @@
+@import '../styles.scss';
+@import './styles.scss';
+
+.dodoContainer {
+  color: $text;
+}
+
+.dodoClickable {
+  cursor: pointer;
+
+  &:active,
+  &:hover {
+    background: $secondary-color;
+  }
+
+  &:active {
+    box-shadow: 2px 2px 5px $background-secondary;
+  }
+}
+
+.dodoHighlighted {
+  background-color: $secondary-color;
+}

@@ -1,0 +1,11 @@
+@import '../../styles.scss';
+@import '../../components/styles.scss';
+
+.dodoErrorHeading {
+  color: $main-color;
+  text-align: center;
+}
+
+.dodoErrorMessage {
+  text-align: center;
+}

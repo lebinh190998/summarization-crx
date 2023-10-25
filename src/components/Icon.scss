@@ -1,0 +1,15 @@
+.dodoIcon {
+  width: 20px;
+  height: 20px;
+  display: flex;
+  justify-content: center;
+}
+
+.dodoPopupIcon {
+  width: 20px;
+  height: 20px;
+
+  & > {
+    border-radius: 50%;
+  }
+}
