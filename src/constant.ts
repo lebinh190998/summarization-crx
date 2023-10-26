@@ -9,7 +9,7 @@ export const LANGUAGE_CODES = {
   ENGLISH: 'en',
 };
 
-export const WORD_LIMIT = 100;
+export const TEXT_LIMIT = 100;
 
 export const HOST_URL = 'https://translation-service.onrender.com';
 

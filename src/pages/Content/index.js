@@ -74,6 +74,24 @@ const embedSelector = {
  * HELPER FUNCTIONS
  *
  * */
+const getAllTextContent = (element) => {
+  let textContent = '';
+
+  // If the element is a text node, add its content to the result
+  if (element.nodeType === Node.TEXT_NODE) {
+    textContent += element.textContent;
+  }
+
+  // If the element has child nodes, recursively process them
+  if (element.childNodes.length > 0) {
+    for (const childNode of element.childNodes) {
+      textContent += getAllTextContent(childNode);
+    }
+  }
+
+  return textContent;
+};
+
 const removePopup = (currentPopupElement) => {
   if (currentPopupElement) {
     currentPopupElement.parentNode.removeChild(currentPopupElement);
@@ -181,6 +199,8 @@ document.addEventListener('mouseup', (e) => {
       bottomPosition + window.scrollY
     );
     showPopup(popupElement, DODO_CLASSNAME.DODO_DICT);
+    const entireTextContent = getAllTextContent(document.body);
+    console.log(entireTextContent);
   } catch (e) {
     console.log('There is an error');
     console.error(e);

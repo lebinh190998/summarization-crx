@@ -1,10 +1,4 @@
-import { WORD_LIMIT } from './constant';
 import { language } from './language';
-
-interface TokenPayload {
-  sub: string;
-  exp: number;
-}
 
 const sendBgMessage = (msg: string, args = {}): Promise<any> => {
   return new Promise(function (resolve, reject) {
@@ -17,22 +11,6 @@ const sendBgMessage = (msg: string, args = {}): Promise<any> => {
 
 const isErrorAvailableInResponse = (response: any) =>
   response && response.errorMessage;
-
-const checkIsWord = (text: string) => {
-  const wordsArray = text.split(' ');
-  if (wordsArray.length > 1) {
-    return false;
-  }
-  return true;
-};
-
-const checkWordCount = (text: string) => {
-  const wordsArray = text.split(' ');
-  if (wordsArray.length > WORD_LIMIT) {
-    return false;
-  }
-  return true;
-};
 
 const onScrollSuggestion = (xpath: string, idx: number) => {
   const element = document.evaluate(
@@ -97,65 +75,6 @@ const shuffle = (array: any[]) => {
   return array;
 };
 
-const compareWordsTenseInsensitive = (word: string, originalWord: string) => {
-  let a = word.toLowerCase().replace(/[^a-zA-Z]/, '');
-  let b = originalWord.toLowerCase();
-
-  if (
-    a === b ||
-    a.slice(0, -1) === b || // 'cars' & 'car'
-    a.slice(0, -2) === b || // 'passed' & 'pass'
-    a.slice(0, -3) === b || // 'passing' & 'pass'
-    a.includes(b) || // 'non-matching' & 'matching'
-    a.slice(0, -3) === b.slice(0, -1) // 'replies' & 'reply'
-  ) {
-    return true;
-  }
-
-  return false;
-};
-
-const getTokenSubject = (token: string) => {
-  const tokenWithoutBearer = token.replace(/^Bearer\s+/i, '');
-
-  // Split the token into its three parts: header, payload, and signature
-  const parts = tokenWithoutBearer.split('.');
-  if (parts.length !== 3) {
-    // Invalid token format
-    return false;
-  }
-
-  // Decode the payload (part 1)
-  const payload: TokenPayload = JSON.parse(atob(parts[1]));
-  return payload.sub;
-};
-
-const isTokenValid = (token: string | null): boolean => {
-  if (!token) {
-    return false;
-  }
-
-  const tokenWithoutBearer = token.replace(/^Bearer\s+/i, '');
-
-  // Split the token into its three parts: header, payload, and signature
-  const parts = tokenWithoutBearer.split('.');
-  if (parts.length !== 3) {
-    // Invalid token format
-    return false;
-  }
-
-  // Decode the payload (part 1)
-  const payload: TokenPayload = JSON.parse(atob(parts[1]));
-
-  // Check the token's expiration time (exp)
-  const currentTimestamp = Math.floor(Date.now() / 1000);
-  if (payload.exp <= currentTimestamp) {
-    return false;
-  }
-
-  return true;
-};
-
 const capitalizeFirstLetter = (str: string) => {
   if (str.length === 0) {
     return str;
@@ -166,15 +85,10 @@ const capitalizeFirstLetter = (str: string) => {
 
 export const Utils = {
   sendBgMessage,
-  checkIsWord,
   onScrollSuggestion,
-  checkWordCount,
   getRandomInt,
   translateText,
   shuffle,
   removeValuesFromArray,
-  compareWordsTenseInsensitive,
-  isTokenValid,
-  getTokenSubject,
   capitalizeFirstLetter,
 };
