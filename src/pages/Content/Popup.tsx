@@ -1,161 +1,140 @@
 import React, { memo, useCallback, useEffect, useMemo, useState } from 'react';
-import ErrorPage from './ErrorPage';
 import './Popup.scss';
 import '../../styles.scss';
-import { Searchbar, Icon, Button } from '../../components';
-import { Utils } from '../../utils';
-import { LANGUAGE_CODES } from '../../constant';
+import Draggable from 'react-draggable';
 import classNames from 'classnames';
-import { RootState } from '../../redux/types';
-import { setTranslateTerm } from '../../redux/popup';
+import { Button, Icon, TextStatic } from '../../components';
+import { Utils } from '../../utils';
 import { useDispatch, useSelector } from 'react-redux';
-import { PositionCssType } from '../../types';
-import { loadLanguage, redirect, toggleLanguage } from '../../redux/actions';
+import { RootState } from '../../redux/types';
+import { loadLanguage } from '../../redux/actions';
 
 interface PopupType {
-  xPosition: number;
-  yPosition: number;
-  translate: string;
+  textContent: string;
 }
 
-const Popup = ({ xPosition, yPosition, translate }: PopupType) => {
-  const [isShowPopup, setIsShowPopup] = useState<boolean>(false);
-
+const GamePopup = ({ textContent }: PopupType) => {
+  const [isExpand, setIsExpand] = useState(false);
+  const [isDragging, setIsDragging] = useState(false);
   const dispatch = useDispatch();
 
   useEffect(() => {
     loadLanguage(dispatch);
   }, []);
 
-  const openPopupDetails = () => {
-    setIsShowPopup(!isShowPopup);
-    dispatch(
-      setTranslateTerm({
-        previous: '',
-        current: translate,
-      })
-    );
-  };
-
-  const generatePositionCSS = (xPosition: number, yPosition: number) => {
-    const cssObj: PositionCssType = { position: 'absolute' };
-
-    if (window.innerWidth - xPosition - 20 < window.innerWidth / 3) {
-      cssObj.right = window.innerWidth - xPosition - 20;
-    } else {
-      cssObj.left = xPosition;
+  const eventControl = (event: any, info: any) => {
+    if (event.type === 'mousemove' || event.type === 'touchmove') {
+      setIsDragging(true);
     }
 
-    if (window.innerHeight - yPosition + 15 < window.innerHeight / 3) {
-      cssObj.bottom = window.innerHeight - yPosition + 15;
-    } else {
-      cssObj.top = yPosition;
+    if (event.type === 'mouseup' || event.type === 'touchend') {
+      setTimeout(() => {
+        setIsDragging(false);
+      }, 100);
     }
-    return cssObj as React.CSSProperties;
   };
 
-  const postionStyle: React.CSSProperties = generatePositionCSS(
-    xPosition,
-    yPosition
-  );
+  const handleExpand = (event: any, expand: boolean) => {
+    if (isDragging === false) {
+      setIsExpand(expand);
+    }
+  };
+
+  const defaultPosition = useMemo(() => {
+    return {
+      x: window.innerWidth - 100,
+      y: 100,
+    };
+  }, []);
+
   return (
     <>
-      {isShowPopup ? (
-        <PopupDetails postionStyle={postionStyle} />
+      {isExpand ? (
+        <Draggable bounds="body" onDrag={eventControl} onStop={eventControl}>
+          <div
+            className={classNames('dodoGamePopupContainer', 'dodoZIndex')}
+            style={{
+              position: 'absolute',
+              left: defaultPosition.x - 300,
+              top: defaultPosition.y,
+            }}
+          >
+            <GamePopupDetails
+              textContent={textContent}
+              handleExpand={handleExpand}
+            />
+          </div>
+        </Draggable>
       ) : (
-        <PopupIcon
-          postionStyle={postionStyle}
-          openPopupDetails={openPopupDetails}
-          translate={translate}
-        ></PopupIcon>
+        <Draggable bounds="body" onDrag={eventControl} onStop={eventControl}>
+          <div
+            className={classNames('dodoGamePopupContainer', 'dodoZIndex')}
+            style={{
+              position: 'absolute',
+              left: defaultPosition.x,
+              top: defaultPosition.y,
+            }}
+          >
+            <GamePopupIcon handleExpand={handleExpand} />
+          </div>
+        </Draggable>
       )}
     </>
   );
 };
 
-interface PopupDetails {
-  postionStyle: React.CSSProperties;
+interface GamePopupDetails {
+  textContent: string;
+  handleExpand: (event: any, expand: boolean) => void;
 }
 
-const PopupDetails = ({ postionStyle }: PopupDetails) => {
+export const GamePopupDetails = ({
+  textContent,
+  handleExpand,
+}: GamePopupDetails) => {
   // global state
-  const { translateTerm, language } = useSelector(
-    (state: RootState) => state.popup
-  );
+  const { language } = useSelector((state: RootState) => state.popup);
 
   const dispatch = useDispatch();
 
-  // local state
-  const [isLoading, setIsLoading] = useState(true);
-
   return (
-    <div className={classNames('dodoPopup', 'dodoZIndex')} style={postionStyle}>
-      <div className="dodoNavBar">
-        <Searchbar
-          defaultTerm={translateTerm.current || ''}
-          onSearch={(text) => redirect(dispatch, text)}
-          showAutocomplete={true}
-        ></Searchbar>
+    <div className={'dodoGamePopup'}>
+      <div className="dodoGamePopupHeader">
+        <Icon
+          className="dodoGameIcon"
+          src={chrome.runtime.getURL('logo.svg')}
+        />
+        <TextStatic variant={'h4'}>Header</TextStatic>
         <Button
+          className="dodoContractButton"
           variant="invisible"
           size="normal"
-          onClick={() => toggleLanguage(dispatch, language)}
-          accessories={
-            language === LANGUAGE_CODES.VIETNAMESE ? (
-              <Icon src={chrome.runtime.getURL('vietnam.svg')} />
-            ) : (
-              <Icon src={chrome.runtime.getURL('usa.svg')} />
-            )
-          }
+          accessories={<Icon src={chrome.runtime.getURL('xmark.svg')} />}
+          onClick={(e) => handleExpand(e, false)}
         />
       </div>
-      <div className="dodoPopupContents">
-        <div>Content</div>
-      </div>
+      <div className="dodoGamePopupBody">{textContent}</div>
     </div>
   );
 };
 
-interface PopupIcon {
-  postionStyle: React.CSSProperties;
-  openPopupDetails: () => void;
-  translate: string;
+interface GamePopupIconType {
+  handleExpand: (event: any, expand: boolean) => void;
 }
 
-const PopupIcon = ({
-  postionStyle,
-  openPopupDetails,
-  translate,
-}: PopupIcon) => {
-  const [isHovered, setIsHovered] = useState(false);
+const GamePopupIcon = ({ handleExpand }: GamePopupIconType) => {
   // global state
   const { language } = useSelector((state: RootState) => state.popup);
 
-  const handleClick = () => {
-    const lessThanMaxinum = Utils.checkWordCount(translate);
-    if (lessThanMaxinum) {
-      openPopupDetails();
-    }
-  };
-
-  const renderLabel = () => {
-    return (
-      <span className="dodoPopupLabel">
-        {Utils.checkWordCount(translate)
-          ? Utils.translateText(`${language}.general.translate`)
-          : Utils.translateText(`${language}.popup.word_limit`)}
-      </span>
-    );
-  };
+  const [isHovered, setIsHovered] = useState(false);
 
   return (
-    <div className="dodoZIndex" style={postionStyle}>
+    <>
       {isHovered ? (
         <Button
           className="dodoPopupIconWrapper"
-          variant="secondary"
+          variant="primary"
           size="normal"
-          disabled={!Utils.checkWordCount(translate)}
           accessories={
             <Icon
               className="dodoPopupIcon"
@@ -163,27 +142,29 @@ const PopupIcon = ({
             />
           }
           onMouseLeave={() => setIsHovered(false)}
-          children={renderLabel()}
-          onClick={handleClick}
-        />
+          onClick={(e) => handleExpand(e, true)}
+        >
+          <span className="dodoPopupLabel">
+            {Utils.translateText(`${language}.general.revise`)}
+          </span>
+        </Button>
       ) : (
         <Button
-          className="dodoPopupIconWrapper"
+          className="dodoPopupIconCircle dodoPopupIconWrapper"
           variant="invisible"
           size="normal"
-          disabled={!Utils.checkWordCount(translate)}
           accessories={
             <Icon
               className="dodoPopupIcon"
-              src={chrome.runtime.getURL('logo.svg')}
+              src={chrome.runtime.getURL('logo-transparent.svg')}
             />
           }
           onMouseEnter={() => setIsHovered(true)}
-          onClick={handleClick}
+          onClick={(e) => handleExpand(e, true)}
         />
       )}
-    </div>
+    </>
   );
 };
 
-export default memo(Popup);
+export default memo(GamePopup);

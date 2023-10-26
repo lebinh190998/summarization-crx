@@ -83,6 +83,10 @@ const capitalizeFirstLetter = (str: string) => {
   return str.charAt(0).toUpperCase() + str.slice(1);
 };
 
+const pureText = (text: string) => {
+  return text.replace(/\{.*?\}/g, '');
+};
+
 export const Utils = {
   sendBgMessage,
   onScrollSuggestion,
@@ -91,4 +95,5 @@ export const Utils = {
   shuffle,
   removeValuesFromArray,
   capitalizeFirstLetter,
+  pureText,
 };

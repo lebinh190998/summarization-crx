@@ -1,10 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Popup from './Popup';
 
 import store from '../../redux/store';
 import { Provider } from 'react-redux';
 import { COMMAND_MESSAGES } from '../../constant';
+import GamePopup from './Popup';
 
 import '../../styles.scss';
 import { Utils } from '../../utils';
@@ -15,12 +15,8 @@ import { Utils } from '../../utils';
  *
  * */
 const DODO_CLASSNAME = {
-  DODO_CSS_PREFIX: 'dodo',
-  DODO_DICT: 'dodo-dict',
-  DODO_WRITING_TRANSLATION: 'dodo-writing-translation',
+  DODO_GAME: 'dodo-game',
 };
-
-let IS_EMBEDED = false;
 
 let fontAnton = new FontFace(
   'Anton-Regular',
@@ -38,48 +34,26 @@ let fontPromptBold = new FontFace(
 );
 document.fonts.add(fontPromptBold);
 
-const WRITING_POPUP_URL_BLACLKLIST = {
-  'www.notion.so': 'notion',
-};
-
-const embedSelector = {
-  facebook: {
-    largeScreen: "div[role='complementary']",
-    smallScreen: "div[role='main']",
-  },
-  google: "div[id='rcnt']",
-  youtube: {
-    homepage: '#contents .ytd-rich-grid-row',
-    watch: '#related',
-  },
-  instagram: {
-    homepage: "[role^='main']>:first-child>section",
-  },
-  stackoverflow: "[role='main']",
-  tiktok: "[data-e2e='nav-foryou']",
-  shopee: "div[role='main']",
-  lazada: {
-    homepage: "[class='page']",
-    productPage: '#root',
-  },
-  tiki: '#main-header',
-  default: {
-    sidebar: "[class^='sidebar']",
-    main: "[class^='main']",
-  },
-};
-
 /***
  *
  * HELPER FUNCTIONS
  *
  * */
 const getAllTextContent = (element) => {
+  if (!element) {
+    return '';
+  }
+
+  // Exclude 'script' tags
+  if (element.tagName && element.tagName.toLowerCase() === 'script') {
+    return '';
+  }
+
   let textContent = '';
 
   // If the element is a text node, add its content to the result
   if (element.nodeType === Node.TEXT_NODE) {
-    textContent += element.textContent;
+    textContent += `${element.textContent.trim()}. `;
   }
 
   // If the element has child nodes, recursively process them
@@ -98,20 +72,30 @@ const removePopup = (currentPopupElement) => {
   }
 };
 
-const renderPopup = (selectedString, rightPosition, bottomPosition) => {
-  const popupElement = document.createElement('div');
-  popupElement.setAttribute('id', DODO_CLASSNAME.DODO_DICT);
+const renderPopup = (textContent) => {
+  const gamepopupElement = document.createElement('div');
+  gamepopupElement.setAttribute('id', DODO_CLASSNAME.DODO_GAME);
   ReactDOM.render(
     <Provider store={store}>
-      <Popup
-        xPosition={rightPosition}
-        yPosition={bottomPosition}
-        translate={selectedString}
-      />
+      <GamePopup textContent={textContent} />
     </Provider>,
-    popupElement
+    gamepopupElement
   );
-  return popupElement;
+  return gamepopupElement;
+};
+
+const addEmbedGame = () => {
+  const currentPopupElement = document.getElementById(DODO_CLASSNAME.DODO_GAME);
+  if (currentPopupElement) {
+    removePopup(currentPopupElement);
+  }
+
+  const textContent = getAllTextContent(document.body);
+  console.log(textContent);
+
+  showPopup(renderPopup(textContent), DODO_CLASSNAME.DODO_GAME);
+
+  return;
 };
 
 const showPopup = (popupElement, popupId) => {
@@ -120,90 +104,23 @@ const showPopup = (popupElement, popupId) => {
   document.getElementById(popupId).focus();
 };
 
-const isFocusClick = (e) => {
-  const clickTargetClassname = e.target.className;
-  const targetElement = e.target;
-
-  if (!clickTargetClassname || !targetElement) {
-    return false;
-  }
-
-  if (
-    Object.values(DODO_CLASSNAME).includes(clickTargetClassname) ||
-    clickTargetClassname.startsWith(DODO_CLASSNAME.DODO_CSS_PREFIX) ||
-    targetElement?.closest(`[class*="${DODO_CLASSNAME.DODO_CSS_PREFIX}"]`)
-  ) {
-    return true;
-  }
-
-  return false;
-};
-
-const getString = () => {
-  const selectedString = window.getSelection().toString();
-  return selectedString;
-};
-
-const getStringPosition = (e) => {
-  const selectedElement = window.getSelection().getRangeAt(0);
-  const { right: rightPosition, bottom: bottomPosition } =
-    selectedElement.getBoundingClientRect();
-  const cursorX = e.pageX;
-  const cursorY = e.pageY;
-  const distance = Math.sqrt(
-    Math.pow(rightPosition - cursorX, 2) + Math.pow(bottomPosition - cursorY, 2)
-  );
-  if (distance > 300) {
-    const padding = 10;
-    const { x, y } = document.body.getBoundingClientRect();
-    return {
-      rightPosition: cursorX + x + padding,
-      bottomPosition: cursorY + y + padding,
-    };
-  } else {
-    return { rightPosition, bottomPosition };
-  }
-};
-
 /***
  *
  * DOM MANIPULATION
  *
  * */
-document.addEventListener('mouseup', (e) => {
-  try {
-    // No action if clicking action is inside the Popup
-    if (isFocusClick(e)) {
-      return;
-    }
+if (document.readyState !== 'loading') {
+  addEmbedGame();
+} else {
+  document.addEventListener('DOMContentLoaded', function () {
+    addEmbedGame();
+  });
+}
 
-    // Remove all current Popups
-    const currentPopupElement = document.getElementById(
-      DODO_CLASSNAME.DODO_DICT
-    );
-    if (currentPopupElement) {
-      removePopup(currentPopupElement);
-    }
-
-    // No action if string empty
-    const selectedString = getString();
-    if (selectedString === '') {
-      return;
-    }
-
-    const { rightPosition, bottomPosition } = getStringPosition(e);
-
-    const popupElement = renderPopup(
-      selectedString,
-      rightPosition + window.scrollX,
-      bottomPosition + window.scrollY
-    );
-    showPopup(popupElement, DODO_CLASSNAME.DODO_DICT);
-    const entireTextContent = getAllTextContent(document.body);
-    console.log(entireTextContent);
-  } catch (e) {
-    console.log('There is an error');
-    console.error(e);
+chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
+  // listen for messages sent from background.js
+  if (request.message === COMMAND_MESSAGES.CHANGE_URL) {
+    addEmbedGame();
   }
 });
 
