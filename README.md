@@ -96,7 +96,7 @@ python run.py
 
 ## Frontend:
 
-1. Navigate to `/summarization-crx` , install the required packages
+1. Open another terminal, navigate to `/summarization-crx`, install the required packages
 
 ```bash
 npm install
