@@ -1,12 +1,79 @@
 # Web-Summarization
 
-## Installing and Running
+## Set up your environment
+
+### 1. Installing Node.js
+
+Node.js is a JavaScript runtime that allows you to run JavaScript on the server side. This project may require Node.js to manage dependencies and run scripts.
+
+Follow these steps to install Node.js:
+
+#### For Windows:
+
+1. Visit the Node.js official website at https://nodejs.org/.
+2. Download the recommended version for Windows.
+3. Run the installer and follow the installation instructions.
+4. To verify the installation, open a command prompt and type the following commands:
+
+```bash
+node -v
+npm -v
+```
+
+#### For macOS:
+
+1. You can install Node.js on macOS using Homebrew, a package manager:
+
+```bash
+brew install node
+```
+
+2. To verify the installation, open your terminal and type the following commands:
+
+```bash
+node -v
+npm -v
+```
+
+#### For Linux:
+
+1. You can install Node.js on Linux using a package manager such as apt or yum. The specific command may vary depending on your distribution. For example, on Ubuntu, you can use:
+
+```bash
+sudo apt-get install nodejs
+```
+
+2. To verify the installation, open a terminal and type the following commands:
+
+```bash
+node -v
+npm -v
+```
+
+### 2. Installing Python
+
+Python is a versatile programming language and is used for a wide range of applications, including data processing and web development. This project may require Python for various scripts and tools.
+
+Follow these steps to install Python:
+
+#### For Windows, macOS, and Linux:
+
+1. Visit the Python official website at https://www.python.org/.
+2. Download the latest version of Python.
+3. Run the installer and follow the installation instructions.
+4. To verify the installation, open a command prompt or terminal and type the following command:
+
+```bash
+python --version
+```
+
+## Set up project locally
 
 ### Backend:
 
-1. Open the terminal and run this command.
+1. Open the terminal, navigate to this repo directory and run this command to initiate a virtual environment.
 
-```python
+```bash
 cd ./server
 python3 -m venv .venv
 source .venv/bin/activate
@@ -14,104 +81,40 @@ source .venv/bin/activate
 
 2. Install required packages. Run this command.
 
-```python
+```bash
+pip install --upgrade pip
 pip install -r requirements.txt
 ```
 
-3. Change the package's `name`, `description`, and `repository` fields in `package.json`.
+3. Run the server locally.
 
-## Structure
-
-All your extension's code must be placed in the `src` folder.
-
-The boilerplate is already prepared to have a popup, an options page, a background page, and a new tab page (which replaces the new tab page of your browser). But feel free to customize these.
-
-## TypeScript
-
-This boilerplate now supports TypeScript! The `Options` Page is implemented using TypeScript. Please refer to `src/pages/Options/` for example usages.
-
-## Webpack auto-reload and HRM
-
-To make your workflow much more efficient this boilerplate uses the [webpack server](https://webpack.github.io/docs/webpack-dev-server.html) to development (started with `npm start`) with auto reload feature that reloads the browser automatically every time that you save some file in your editor.
-
-You can run the dev mode on other port if you want. Just specify the env var `port` like this:
-
-```
-$ PORT=6002 npm run start
+```python
+python run.py
 ```
 
-## Content Scripts
+4. You can test the endpoints separatedly at http://0.0.0.0:8000/docs#/
 
-Although this boilerplate uses the webpack dev server, it's also prepared to write all your bundles files on the disk at every code change, so you can point, on your extension manifest, to your bundles that you want to use as [content scripts](https://developer.chrome.com/extensions/content_scripts), but you need to exclude these entry points from hot reloading [(why?)](https://github.com/samuelsimoes/chrome-extension-webpack-boilerplate/issues/4#issuecomment-261788690). To do so you need to expose which entry points are content scripts on the `webpack.config.js` using the `chromeExtensionBoilerplate -> notHotReload` config. Look the example below.
+## Frontend:
 
-Let's say that you want use the `myContentScript` entry point as content script, so on your `webpack.config.js` you will configure the entry point and exclude it from hot reloading, like this:
+1. Navigate to `/summarization-crx` , install the required packages
 
-```js
-{
-  …
-  entry: {
-    myContentScript: "./src/js/myContentScript.js"
-  },
-  chromeExtensionBoilerplate: {
-    notHotReload: ["myContentScript"]
-  }
-  …
-}
+```bash
+npm install
 ```
 
-and on your `src/manifest.json`:
+2. Build a chrome extension for local use
 
-```json
-{
-  "content_scripts": [
-    {
-      "matches": ["https://www.google.com/*"],
-      "js": ["myContentScript.bundle.js"]
-    }
-  ]
-}
+```bash
+npm run build
 ```
 
-## Intelligent Code Completion
+This should create a `/build` directory in your project.
 
-Thanks to [@hudidit](https://github.com/lxieyang/chrome-extension-boilerplate-react/issues/4)'s kind suggestions, this boilerplate supports chrome-specific intelligent code completion using [@types/chrome](https://www.npmjs.com/package/@types/chrome).
+3. Go to chrome://extensions/ in your Chrome, click `Load unpacked` and select this `/build` directory created in step 2
+4. Start the local development package,
 
-## Packing
-
-After the development of your extension run the command
-
-```
-$ NODE_ENV=production npm run build
+```bash
+npm run start
 ```
 
-Now, the content of `build` folder will be the extension ready to be submitted to the Chrome Web Store. Just take a look at the [official guide](https://developer.chrome.com/webstore/publish) to more infos about publishing.
-
-## Secrets
-
-If you are developing an extension that talks with some API you probably are using different keys for testing and production. Is a good practice you not commit your secret keys and expose to anyone that have access to the repository.
-
-To this task this boilerplate import the file `./secrets.<THE-NODE_ENV>.js` on your modules through the module named as `secrets`, so you can do things like this:
-
-_./secrets.development.js_
-
-```js
-export default { key: '123' };
-```
-
-_./src/popup.js_
-
-```js
-import secrets from 'secrets';
-ApiCall({ key: secrets.key });
-```
-
-:point_right: The files with name `secrets.*.js` already are ignored on the repository.
-
-## Resources:
-
-- [Webpack documentation](https://webpack.js.org/concepts/)
-- [Chrome Extension documentation](https://developer.chrome.com/extensions/getstarted)
-
----
-
-Michael Xieyang Liu | [Website](https://lxieyang.github.io)
+5. Profit
