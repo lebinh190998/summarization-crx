@@ -10,6 +10,10 @@ const popupSlice = createSlice({
       previous: '',
       current: '',
     },
+    summarization: {
+      original: '',
+      summarized: '',
+    },
   },
   reducers: {
     setLanguage: (state: State, action: { type: string; payload: string }) => {
@@ -21,9 +25,19 @@ const popupSlice = createSlice({
     ) => {
       state.translateTerm = action.payload;
     },
+    setSummarization: (
+      state: State,
+      action: {
+        type: string;
+        payload: { original: string; summarized: string };
+      }
+    ) => {
+      state.summarization = action.payload;
+    },
   },
 });
 
-export const { setLanguage, setTranslateTerm } = popupSlice.actions;
+export const { setLanguage, setTranslateTerm, setSummarization } =
+  popupSlice.actions;
 
 export default popupSlice.reducer;

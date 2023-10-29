@@ -1,7 +1,4 @@
-import { secrets } from 'secrets';
 import { HOST_URL, STAGING_URL, LANGUAGE_CODES } from '../../constant';
-import { v4 as uuidv4 } from 'uuid';
-import { FEATURE_FLAGS } from '../../flag';
 import { Utils } from '../../utils';
 
 /**
@@ -92,8 +89,36 @@ const crawlCambridgeAutocomplete = async (word: string) => {
   return response;
 };
 
+const requestSummarizeText = async (
+  text: string,
+  sendReponse: (response: any) => void
+) => {
+  try {
+    const headers = new Headers({
+      'content-type': 'application/json',
+    });
+    console.log('SUMMARIZING...');
+    const json = await sendRequest({
+      url: `${STAGING_URL}/summarize`,
+      method: 'POST',
+      body: JSON.stringify({ full_text: text }),
+      headers: headers,
+      isJson: true,
+    });
+    console.log(json);
+    sendReponse({
+      data: {
+        summarizedText: json['summarized_text'] ?? '',
+      },
+    });
+  } catch (err) {
+    console.log(err);
+  }
+};
+
 export const Serivces = {
   requestUpdateLanguage,
   requestGetLanguage,
   requestAutocompleteWords,
+  requestSummarizeText,
 };

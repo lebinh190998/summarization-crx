@@ -177,7 +177,7 @@ $border-thin: 1px solid #000;
 
 .dodoButtonContainer {
   @include dodo-flex-centered;
-  padding-top: 5px;
+  padding: 5px;
 }
 
 .dodoInvisibleInput {

@@ -1,6 +1,6 @@
 import { LANGUAGE_CODES } from '../constant';
-import { getLanguage, updateLanguage } from '../ajax';
-import { setLanguage, setTranslateTerm } from './popup';
+import { getLanguage, updateLanguage, summarizeText } from '../ajax';
+import { setLanguage, setSummarization, setTranslateTerm } from './popup';
 import { Dispatch } from 'redux';
 import { Utils } from '../utils';
 
@@ -35,6 +35,16 @@ export const redirect = (
     setTranslateTerm({
       previous: previousText ?? '',
       current: text.trim(),
+    })
+  );
+};
+
+export const summarize = async (dispatch: Dispatch, text: string) => {
+  const summarizedText = await summarizeText(text);
+  dispatch(
+    setSummarization({
+      original: text,
+      summarized: summarizedText,
     })
   );
 };

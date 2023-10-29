@@ -28,3 +28,14 @@ export const getAutoCompleteWords = async (word: string) => {
 
   return autocompleteWords;
 };
+
+export const summarizeText = async (text: string) => {
+  const {
+    data: { summarizedText },
+  } = (await Utils.sendBgMessage(COMMAND_MESSAGES.SUMMARIZE_TEXT, {
+    text: text,
+  })) as {
+    data: { summarizedText: string };
+  };
+  return summarizedText;
+};

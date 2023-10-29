@@ -33,6 +33,12 @@ chrome.runtime.onMessage.addListener(
           sendResponseToContentScript
         );
         break;
+      case COMMAND_MESSAGES.SUMMARIZE_TEXT:
+        Serivces.requestSummarizeText(
+          message.text,
+          sendResponseToContentScript
+        );
+        break;
       default:
         break;
     }

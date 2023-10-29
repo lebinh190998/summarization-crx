@@ -8,4 +8,8 @@ export type State = {
     previous: string;
     current: string;
   };
+  summarization: {
+    original: string;
+    summarized: string;
+  };
 };
