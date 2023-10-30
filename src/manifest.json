@@ -36,6 +36,14 @@
       "matches": ["<all_urls>"]
     }
   ],
-  "permissions": ["storage", "tabs", "identity", "https://*.chromiumapp.org/*"],
+  "permissions": [
+    "storage",
+    "tabs",
+    "identity",
+    "offscreen",
+    "activeTab",
+    "scripting",
+    "https://*.chromiumapp.org/*"
+  ],
   "host_permissions": ["<all_urls>"]
 }

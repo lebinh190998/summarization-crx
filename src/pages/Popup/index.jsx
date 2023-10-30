@@ -28,6 +28,6 @@ render(
     <Popup />
   </Provider>,
   window.document.getElementsByTagName('body')[0]
-)
+);
 
 if (module.hot) module.hot.accept();

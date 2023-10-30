@@ -15,7 +15,6 @@ chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
 chrome.runtime.onMessage.addListener(
   (message, sender, sendResponseToContentScript) => {
     const tabId = sender?.tab?.id;
-    console.log(message, tabId);
 
     switch (message.command) {
       case COMMAND_MESSAGES.SET_LANGUAGE:
@@ -32,6 +31,15 @@ chrome.runtime.onMessage.addListener(
           message.word,
           sendResponseToContentScript
         );
+        break;
+      case COMMAND_MESSAGES.SAVE_CONTENT:
+        Serivces.requestSavePageContent(
+          message.pageContent,
+          sendResponseToContentScript
+        );
+        break;
+      case COMMAND_MESSAGES.GET_CONTENT:
+        Serivces.requestGetPageContent(sendResponseToContentScript);
         break;
       case COMMAND_MESSAGES.SUMMARIZE_TEXT:
         Serivces.requestSummarizeText(

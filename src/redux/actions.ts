@@ -1,5 +1,10 @@
 import { LANGUAGE_CODES } from '../constant';
-import { getLanguage, updateLanguage, summarizeText } from '../ajax';
+import {
+  getLanguage,
+  updateLanguage,
+  summarizeText,
+  getPageContent,
+} from '../ajax';
 import { setLanguage, setSummarization, setTranslateTerm } from './popup';
 import { Dispatch } from 'redux';
 import { Utils } from '../utils';
@@ -45,6 +50,16 @@ export const summarize = async (dispatch: Dispatch, text: string) => {
     setSummarization({
       original: text,
       summarized: summarizedText,
+    })
+  );
+};
+
+export const getCurrentPageContent = async (dispatch: Dispatch) => {
+  const pageContent = await getPageContent();
+  dispatch(
+    setSummarization({
+      original: pageContent,
+      summarized: '',
     })
   );
 };

@@ -11,38 +11,6 @@
   align-items: center;
 }
 
-.dodoInitialHeading {
-  color: $main-color;
-  text-align: center;
-}
-
-.dodoInitialMessage {
-  text-align: center;
-}
-
-.dodoPronounceIcon {
-  width: 20px;
-  height: 20px;
-}
-
-.dodoEmailInputWrapper {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-
-  .dodoEmailInput {
-    width: 100%;
-  }
-
-  .dodoSubmitButton {
-    justify-content: center;
-    width: 100px;
-    margin-top: 5px;
-  }
-}
-
-.dodoLanguageButton {
-  position: absolute;
-  right: 0;
+.dodoRotate90 {
+  transform: rotate(90deg);
 }

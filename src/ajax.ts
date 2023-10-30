@@ -39,3 +39,23 @@ export const summarizeText = async (text: string) => {
   };
   return summarizedText;
 };
+
+export const savePageContent = async (pageContent: string) => {
+  const {
+    data: { isSaved },
+  } = (await Utils.sendBgMessage(COMMAND_MESSAGES.SAVE_CONTENT, {
+    pageContent,
+  })) as {
+    data: { isSaved: boolean };
+  };
+  return isSaved;
+};
+
+export const getPageContent = async () => {
+  const {
+    data: { pageContent },
+  } = (await Utils.sendBgMessage(COMMAND_MESSAGES.GET_CONTENT)) as {
+    data: { pageContent: string };
+  };
+  return pageContent;
+};

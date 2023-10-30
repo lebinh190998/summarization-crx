@@ -1,6 +1,7 @@
 export const language = {
   en: {
     general: {
+      summarize: 'Summarize',
       saved_words: 'Saved words',
       english: 'English',
       vietnamese: 'Vietnamese',
@@ -54,6 +55,7 @@ export const language = {
   },
   vi: {
     general: {
+      summarize: 'Tóm tắt',
       saved_words: 'Từ đã lưu',
       english: 'Tiếng Anh',
       vietnamese: 'Tiếng Việt',

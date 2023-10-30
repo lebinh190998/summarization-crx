@@ -4,10 +4,12 @@ import ReactDOM from 'react-dom';
 import store from '../../redux/store';
 import { Provider } from 'react-redux';
 import { COMMAND_MESSAGES } from '../../constant';
-import GamePopup from './Popup';
+import Popup from './Popup';
+import { getAllTextContent } from '../../domService';
 
 import '../../styles.scss';
 import { Utils } from '../../utils';
+import { savePageContent } from '../../ajax';
 
 /***
  *
@@ -39,33 +41,6 @@ document.fonts.add(fontPromptBold);
  * HELPER FUNCTIONS
  *
  * */
-const getAllTextContent = (element) => {
-  if (!element) {
-    return '';
-  }
-
-  // Exclude 'script' tags
-  if (element.tagName && element.tagName.toLowerCase() === 'script') {
-    return '';
-  }
-
-  let textContent = '';
-
-  // If the element is a text node, add its content to the result
-  if (element.nodeType === Node.TEXT_NODE) {
-    textContent += `${element.textContent.trim()}. `;
-  }
-
-  // If the element has child nodes, recursively process them
-  if (element.childNodes.length > 0) {
-    for (const childNode of element.childNodes) {
-      textContent += getAllTextContent(childNode);
-    }
-  }
-
-  return textContent;
-};
-
 const removePopup = (currentPopupElement) => {
   if (currentPopupElement) {
     currentPopupElement.parentNode.removeChild(currentPopupElement);
@@ -73,25 +48,26 @@ const removePopup = (currentPopupElement) => {
 };
 
 const renderPopup = (textContent) => {
-  const gamepopupElement = document.createElement('div');
-  gamepopupElement.setAttribute('id', DODO_CLASSNAME.DODO_GAME);
+  const popupElement = document.createElement('div');
+  popupElement.setAttribute('id', DODO_CLASSNAME.DODO_GAME);
   ReactDOM.render(
     <Provider store={store}>
-      <GamePopup textContent={textContent} />
+      <Popup textContent={textContent} />
     </Provider>,
-    gamepopupElement
+    popupElement
   );
-  return gamepopupElement;
+  return popupElement;
 };
 
-const addEmbedGame = () => {
+const addEmbedGame = async () => {
   const currentPopupElement = document.getElementById(DODO_CLASSNAME.DODO_GAME);
   if (currentPopupElement) {
     removePopup(currentPopupElement);
   }
 
-  const textContent = getAllTextContent(document.body);
-  console.log(textContent);
+  const rawText = getAllTextContent(document.body);
+  const textContent = Utils.preprocessText(rawText);
+  await savePageContent(textContent);
 
   showPopup(renderPopup(textContent), DODO_CLASSNAME.DODO_GAME);
 
@@ -111,14 +87,9 @@ const showPopup = (popupElement, popupId) => {
  * */
 if (document.readyState !== 'loading') {
   addEmbedGame();
-} else {
-  document.addEventListener('DOMContentLoaded', function () {
-    addEmbedGame();
-  });
 }
 
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
-  // listen for messages sent from background.js
   if (request.message === COMMAND_MESSAGES.CHANGE_URL) {
     addEmbedGame();
   }

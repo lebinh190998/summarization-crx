@@ -1,3 +1,4 @@
+import { getAllTextContent } from '../../domService';
 import { HOST_URL, STAGING_URL, LANGUAGE_CODES } from '../../constant';
 import { Utils } from '../../utils';
 
@@ -97,7 +98,7 @@ const requestSummarizeText = async (
     const headers = new Headers({
       'content-type': 'application/json',
     });
-    console.log('SUMMARIZING...');
+
     const json = await sendRequest({
       url: `${STAGING_URL}/summarize`,
       method: 'POST',
@@ -105,7 +106,7 @@ const requestSummarizeText = async (
       headers: headers,
       isJson: true,
     });
-    console.log(json);
+
     sendReponse({
       data: {
         summarizedText: json['summarized_text'] ?? '',
@@ -116,9 +117,34 @@ const requestSummarizeText = async (
   }
 };
 
+const requestSavePageContent = async (
+  pageContent: string,
+  sendReponse: (response: any) => void
+) => {
+  chrome.storage.local.set({ page_content: pageContent });
+
+  sendReponse({
+    data: {
+      isSaved: true,
+    },
+  });
+};
+
+const requestGetPageContent = async (sendReponse: (response: any) => void) => {
+  chrome.storage.local.get(['page_content'], async (result) => {
+    sendReponse({
+      data: {
+        pageContent: result.page_content ?? '',
+      },
+    });
+  });
+};
+
 export const Serivces = {
   requestUpdateLanguage,
   requestGetLanguage,
   requestAutocompleteWords,
   requestSummarizeText,
+  requestSavePageContent,
+  requestGetPageContent,
 };

@@ -1,11 +1,7 @@
 {
   "compilerOptions": {
-    "target": "es5",
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
+    "target": "es2015",
+    "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": false,
     "skipLibCheck": true,
     "esModuleInterop": true,
@@ -20,16 +16,9 @@
     "jsx": "react",
     "baseUrl": ".",
     "paths": {
-      "secrets": [
-        "secrets/secrets.development.ts"
-      ],
+      "secrets": ["secrets/secrets.development.ts"]
     }
   },
-  "include": [
-    "src"
-  ],
-  "exclude": [
-    "build",
-    "node_modules"
-  ]
+  "include": ["src"],
+  "exclude": ["build", "node_modules"]
 }
