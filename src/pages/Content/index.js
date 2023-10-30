@@ -65,8 +65,7 @@ const addEmbedGame = async () => {
     removePopup(currentPopupElement);
   }
 
-  const rawText = getAllTextContent(document.body);
-  const textContent = Utils.preprocessText(rawText);
+  const textContent = getAllTextContent(document.body);
   await savePageContent(textContent);
 
   showPopup(renderPopup(textContent), DODO_CLASSNAME.DODO_GAME);

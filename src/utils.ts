@@ -83,25 +83,6 @@ const capitalizeFirstLetter = (str: string) => {
   return str.charAt(0).toUpperCase() + str.slice(1);
 };
 
-const preprocessText = (inputText: string) => {
-  // Replace consecutive dots (2 or more) with a space
-  const cleanedText = inputText.replace(/\.{2,}/g, ' ');
-
-  // Replace any remaining single dots with a space
-  const cleanedTextWithSingleDots = cleanedText.replace(/\./g, ' ');
-
-  // Split the input text by spaces
-  const words = cleanedTextWithSingleDots.split(' ');
-
-  // Filter and join only the words that are not empty
-  const meaningfulWords = words.filter((word) => word.trim() !== '');
-
-  // Join the meaningful words with spaces to form the resulting text
-  const resultText = meaningfulWords.join(' ');
-
-  return resultText;
-};
-
 export const Utils = {
   sendBgMessage,
   onScrollSuggestion,
@@ -110,5 +91,4 @@ export const Utils = {
   shuffle,
   removeValuesFromArray,
   capitalizeFirstLetter,
-  preprocessText,
 };
