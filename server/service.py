@@ -6,7 +6,7 @@ from nltk.tokenize import sent_tokenize
 base_path = os.path.dirname(os.path.abspath(__file__))
 
 
-pipe = pipeline("summarization", model="facebook/bart-large-cnn")
+pipe = pipeline("summarization", model="facebook/bart-large-xsum")
 
 
 async def summarize(full_text: str) -> str:
